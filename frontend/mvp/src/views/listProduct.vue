@@ -1,5 +1,6 @@
 <template>
     <div>
+        <header-component></header-component>
         <div class="input">
           <label for="title">Title</label>
           <input type="text" id="title" v-model="title" />
@@ -33,10 +34,14 @@
 
 <script>
 import axios from "axios"
-import cookies from "vue-cookies"
+import cookies from "vue-cookies";
+import HeaderComponent from "../components/headerComponent.vue";
 
     export default {
         name: "ListProduct",
+        components: {
+            HeaderComponent
+        },
         data() {
             return {
                 title: "",

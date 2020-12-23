@@ -1,6 +1,7 @@
 <template>
     <div>
         <header-component></header-component>
+        
     </div>
 </template>
 
@@ -16,5 +17,5 @@ import HeaderComponent from "../components/headerComponent.vue";
 </script>
 
 <style lang="scss" scoped>
-
+    
 </style>

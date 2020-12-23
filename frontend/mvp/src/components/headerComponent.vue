@@ -1,6 +1,11 @@
 <template>
     <div id="headerContainer">
         <div>
+            <h1>
+                TS Wooden Creations
+            </h1>
+        </div>
+        <div>
             <router-link class="headerLinks" to="/">Home</router-link>
         </div>
         <div>
@@ -29,7 +34,7 @@
 
     #headerContainer {
         display: grid;
-        grid-template-columns: 40vw 15vw 15vw 15vw 15vw;
+        grid-template-columns: 26vw 14.8vw 14.8vw 14.8vw 14.8vw 14.8vw;
         grid-template-rows: 10vh;
         justify-content: center;
         align-items: center;

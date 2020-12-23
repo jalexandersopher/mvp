@@ -2,8 +2,8 @@
     <div>
         <header-component></header-component>
         <div class="input">
-          <label for="title">Title</label>
-          <input type="text" id="title" v-model="title" />
+          <label for="title">Client Email</label>
+          <input type="text" id="title" v-model="email" />
         </div>
         <div class="submit">
           <button @click="deleteProduct" >Submit</button>
@@ -22,13 +22,13 @@ import cookies from "vue-cookies";
 import HeaderComponent from "../components/headerComponent.vue";
 
     export default {
-        name: "DeleteProduct",
+        name: "DeleteClientMessages",
         components: {
             HeaderComponent
         },
         data() {
             return {
-                title: "",
+                email: "",
                 deleteContentStatus: "Waiting to List",
             }
         },
@@ -36,21 +36,21 @@ import HeaderComponent from "../components/headerComponent.vue";
             deleteProduct: function() {
                 this. deleteContentStatus = "Deleting!"
                 axios.request({
-                    url: "http://localhost:5000/api/card",
+                    url: "http://localhost:5000/api/contact",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     method: "DELETE",
                     data: {
                         "loginToken": cookies.get("loginToken"),
-                        "title": this.title
+                        "email": this.email
                     }
                 }).then((response) => {
                     console.log(response)
-                    this.deleteContentStatus = "Product Deleted Successfully!"
+                    this.deleteContentStatus = "Message Deleted Successfully!"
                 }).catch((error) => {
                     console.log(error)
-                    this.deleteContentStatus = "Product Deleting Failed!"
+                    this.deleteContentStatus = "Message Deleting Failed!"
                 })
             }
         }

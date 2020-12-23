@@ -5,12 +5,12 @@ import AdminPanel from "../views/adminPanel.vue";
 import ClientMessages from "../views/clientMessages.vue";
 import DeleteProduct from "../views/deleteProduct.vue";
 import ListProduct from "../views/listProduct.vue";
-import SaleInquiry from "../views/saleInquiry.vue";
 import HomePage from "../views/homePage.vue";
 import GalleryView from "../views/galleryView.vue";
 import AboutUs from "../views/aboutUs.vue";
 import ShopView from "../views/shopView.vue";
 import ContactUs from "../views/contactUs.vue";
+import DeleteClientMessages from "../views/deleteClientMessages";
 
 Vue.use(VueRouter);
 
@@ -46,11 +46,6 @@ const routes = [
     component: ListProduct
   },
   {
-    path: "/saleinquiry",
-    name: "SaleInquiry",
-    component: SaleInquiry
-  },
-  {
     path: "/gallery",
     name: "GalleryView",
     component: GalleryView
@@ -70,6 +65,11 @@ const routes = [
     name: "ContactUs",
     component: ContactUs
   },
+  {
+    path: "/deleteclientmessages",
+    name: "DeleteClientMessages",
+    component: DeleteClientMessages
+  }
 ];
 
 const router = new VueRouter({

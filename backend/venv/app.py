@@ -122,11 +122,12 @@ def contact():
         email = request.json.get("email")
         description = request.json.get("description")
         item_name = request.json.get("item_name")
+        name = request.json.get("name")
 
         try:
             conn = mariadb.connect(user=dbcreds.user, password=dbcreds.password, host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO contact(email, description, item_name) VALUES(?, ?, ?, ?)", [email, description, item_name])
+            cursor.execute("INSERT INTO contact(email, description, item_name, name) VALUES(?, ?, ?, name)", [email, description, item_name, name])
             conn.commit()
 
         except Exception as error:
@@ -139,6 +140,36 @@ def contact():
                 conn.rollback()
                 conn.close()
                 return Response(json.dumps({"Message": "Your message was sent!"}, default=str), mimetype="application/json", status=200)
+            else:
+                return Response("Something went wrong!", mimetype="text/html", status=500)
+
+@app.route("/api/contact", methods=['DELETE'])
+def deleteContact():
+    if request.method == "DELETE":
+        email = request.json.get("email")
+        loginToken = request.json.get("loginToken")
+        cardSuccess = False
+
+        try:
+            conn = mariadb.connect(user=dbcreds.user, password=dbcreds.password, host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM user_session WHERE loginToken =?", [loginToken,])
+            card_list = cursor.fetchall()
+            cursor.execute("DELETE FROM contact WHERE email =?", [email,])
+            conn.commit()
+            cardSuccess = True
+
+        except Exception as error:
+            print("Something went wrong: ")
+            print(error)
+        finally:
+            if(cursor != None):
+                cursor.close()
+            if(conn != None):
+                conn.rollback()
+                conn.close()
+            if(cardSuccess):
+                return Response(json.dumps({"Message": "Your product was deleted!"}, default=str), mimetype="application/json", status=200)
             else:
                 return Response("Something went wrong!", mimetype="text/html", status=500)
 
