@@ -45,7 +45,7 @@ def login():
                 conn.rollback()
                 conn.close()
             if(loginSuccess):
-                return Response(json.dumps({"loginToken": loginToken}, default=str), mimetype="application/json", status=200)
+                return Response(json.dumps({"loginToken": loginToken, "username": username}, default=str), mimetype="application/json", status=200)
             else:
                 return Response("Something went wrong!", mimetype="text/html", status=500)
 
@@ -81,6 +81,30 @@ def postCard():
                 conn.close()
             if(cardSuccess):
                 return Response(json.dumps({"Message": "Your product was inserted"}, default=str), mimetype="application/json", status=200)
+            else:
+                return Response("Something went wrong!", mimetype="text/html", status=500)
+
+
+@app.route('/api/cards', methods=['GET'])
+def getProduct():
+    if request.method == 'GET':
+
+        try:
+            conn = mariadb.connect(user=dbcreds.user, password=dbcreds.password, host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM cards")
+            product_list = cursor.fetchall()
+
+        except Exception as error:
+            print("Something went wrong: ")
+            print(error)
+        finally:
+            if(cursor != None):
+                cursor.close()
+            if(conn != None):
+                conn.rollback()
+                conn.close()
+                return Response(json.dumps(product_list, default=str), mimetype="application/json", status=200)
             else:
                 return Response("Something went wrong!", mimetype="text/html", status=500)
 
@@ -127,7 +151,7 @@ def contact():
         try:
             conn = mariadb.connect(user=dbcreds.user, password=dbcreds.password, host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO contact(email, description, item_name, name) VALUES(?, ?, ?, name)", [email, description, item_name, name])
+            cursor.execute("INSERT INTO contact(email, description, item_name, name) VALUES(?, ?, ?, ?)", [email, description, item_name, name])
             conn.commit()
 
         except Exception as error:
@@ -170,6 +194,31 @@ def deleteContact():
                 conn.close()
             if(cardSuccess):
                 return Response(json.dumps({"Message": "Your product was deleted!"}, default=str), mimetype="application/json", status=200)
+            else:
+                return Response("Something went wrong!", mimetype="text/html", status=500)
+
+
+
+@app.route('/api/contact', methods=['GET',])
+def getContact():
+    if request.method == 'GET':
+
+        try:
+            conn = mariadb.connect(user=dbcreds.user, password=dbcreds.password, host=dbcreds.host, port=dbcreds.port, database=dbcreds.database)
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM contact")
+            message_list = cursor.fetchall()
+
+        except Exception as error:
+            print("Something went wrong: ")
+            print(error)
+        finally:
+            if(cursor != None):
+                cursor.close()
+            if(conn != None):
+                conn.rollback()
+                conn.close()
+                return Response(json.dumps(message_list, default=str), mimetype="application/json", status=200)
             else:
                 return Response("Something went wrong!", mimetype="text/html", status=500)
 
